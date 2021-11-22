@@ -41,7 +41,7 @@ def generate_launch_description():
         on_exit=Shutdown())
 
     radio = Node(package='rj_robocup',
-                 executable='sim_radio_node',
+                 executable='network_radio_node',
                  output='screen',
                  parameters=[config],
                  on_exit=Shutdown())
@@ -70,7 +70,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(vision_receiver_launch_path))
 
     ref_receiver = Node(package='rj_robocup',
-                        executable='internal_referee_node',
+                        executable='external_referee_node',
                         output='screen',
                         parameters=[config],
                         on_exit=Shutdown())

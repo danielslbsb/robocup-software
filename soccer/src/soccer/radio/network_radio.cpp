@@ -8,6 +8,8 @@
 #include "packet_convert.hpp"
 #include "rj_geometry/util.hpp"
 
+#include <iostream>
+
 using namespace boost::asio;
 using ip::udp;
 
@@ -30,6 +32,7 @@ void NetworkRadio::start_receive() {
 
 void NetworkRadio::send(int robot_id, const rj_msgs::msg::MotionSetpoint& motion,
                         const rj_msgs::msg::ManipulatorSetpoint& manipulator) {
+	
     // Build the control packet for this robot.
     std::array<uint8_t, rtp::HeaderSize + sizeof(rtp::RobotTxMessage)>& forward_packet_buffer =
         send_buffers_[robot_id];
@@ -57,6 +60,7 @@ void NetworkRadio::send(int robot_id, const rj_msgs::msg::MotionSetpoint& motion
         } else {
             // Send to the given IP address
             const udp::endpoint& robot_endpoint = connection.endpoint;
+	    // SPDLOG_ERROR("connection {}", connection);
             socket_.async_send_to(
                 boost::asio::buffer(forward_packet_buffer), robot_endpoint,
                 [](const boost::system::error_code& error, [[maybe_unused]] std::size_t num_bytes) {
